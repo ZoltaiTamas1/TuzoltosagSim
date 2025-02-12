@@ -21,7 +21,7 @@ namespace TuzoltosagSim
             Szabad = false;
         }
 
-        public void Visszaérkezik()
+        public void Visszaerkezik()
         {
             Szabad = true;
         }

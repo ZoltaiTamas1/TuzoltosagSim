@@ -7,14 +7,14 @@ namespace TuzoltosagSim
     public class Varos
     {
         public List<Epulet> Epuletek { get; private set; }
-        public List<Tuzolto> TuzoltoK { get; private set; }
+        public List<Tuzolto> Tuzoltok { get; private set; }
         public List<Tuzoltoauto> TuzoltoAutok { get; private set; }
         public List<Vizforras> Vizforrasok { get; private set; }
 
         public Varos()
         {
             Epuletek = new List<Epulet>();
-            TuzoltoK = new List<Tuzolto>();
+            Tuzoltok = new List<Tuzolto>();
             TuzoltoAutok = new List<Tuzoltoauto>();
             Vizforrasok = new List<Vizforras>();
         }
@@ -26,7 +26,7 @@ namespace TuzoltosagSim
 
         public void TuzoltoHozzaad(Tuzolto tuzolto)
         {
-            TuzoltoK.Add(tuzolto);
+            Tuzoltok.Add(tuzolto);
         }
 
         public void TuzoltoautoHozzaad(Tuzoltoauto auto)
@@ -38,64 +38,93 @@ namespace TuzoltosagSim
         {
             Vizforrasok.Add(vizforras);
         }
+
         public int Tuzoltas(Epulet epulet)
         {
-            var szabadTuzolto = TuzoltoK.FirstOrDefault(t => t.Szabad);
-            var szabadAuto = TuzoltoAutok.FirstOrDefault(a => a.Szabad);
+            Tuzolto szabadTuzolto = null;
+            foreach (var tuzolto in Tuzoltok)
+            {
+                if (tuzolto.Szabad)
+                {
+                    szabadTuzolto = tuzolto;
+                    break;
+                }
+            }
+
+            Tuzoltoauto szabadAuto = null;
+            foreach (var auto in TuzoltoAutok)
+            {
+                if (auto.Szabad)
+                {
+                    szabadAuto = auto;
+                    break;
+                }
+            }
 
             if (szabadTuzolto == null || szabadAuto == null)
+            {
                 throw new Exception("Nincs szabad tűzoltó vagy tűzoltóautó.");
+            }
 
             szabadTuzolto.Riasztas(epulet);
             szabadAuto.Kivonul(szabadTuzolto, epulet);
             szabadTuzolto.Tuzoltas(epulet);
-            szabadAuto.Visszaérkezik();
+            szabadAuto.Visszaerkezik();
 
-            int waterUsed = UseWaterForFire(epulet);
-            return waterUsed;
+            int felhasznaltViz = VizetHasznalTuzoltasra(epulet);
+            return felhasznaltViz;
         }
 
-        private int UseWaterForFire(Epulet epulet)
+        private int VizetHasznalTuzoltasra(Epulet epulet)
         {
-            int baseWaterNeeded = 0;
-            switch (epulet.TuzTipus)
+            int alapVizIgeny = 0;
+            if (epulet.TuzTipus == TuzTipus.Közönséges)
             {
-                case TuzTipus.Közönséges:
-                    baseWaterNeeded = 500;
-                    break;
-                case TuzTipus.Olaj:
-                    baseWaterNeeded = 800;
-                    break;
-                case TuzTipus.Elektromos:
-                    baseWaterNeeded = 300;
-                    break;
+                alapVizIgeny = 500;
+            }
+            else if (epulet.TuzTipus == TuzTipus.Olaj)
+            {
+                alapVizIgeny = 800;
+            }
+            else if (epulet.TuzTipus == TuzTipus.Elektromos)
+            {
+                alapVizIgeny = 300;
             }
 
-            double factor = 1.0;
-            switch (epulet.Tipus)
+            double szorzo = 1.0;
+            if (epulet.Tipus == BuildingType.Lako)
             {
-                case BuildingType.Lako:
-                    factor = 1.0;
-                    break;
-                case BuildingType.Iroda:
-                    factor = 1.2;
-                    break;
-                case BuildingType.Gyar:
-                    factor = 1.5;
-                    break;
+                szorzo = 1.0;
+            }
+            else if (epulet.Tipus == BuildingType.Iroda)
+            {
+                szorzo = 1.2;
+            }
+            else if (epulet.Tipus == BuildingType.Gyar)
+            {
+                szorzo = 1.5;
             }
 
-            int waterNeeded = (int)(baseWaterNeeded * factor);
+            int szuksegesViz = (int)(alapVizIgeny * szorzo);
 
-            var waterSource = Vizforrasok.FirstOrDefault(v => v.VizMennyiseg >= waterNeeded);
-            if (waterSource != null)
+            Vizforras megfeleloVizforras = null;
+            foreach (var vizforras in Vizforrasok)
             {
-                waterSource.VizetHasznal(waterNeeded);
-                return waterNeeded;
+                if (vizforras.VizMennyiseg >= szuksegesViz)
+                {
+                    megfeleloVizforras = vizforras;
+                    break;
+                }
+            }
+
+            if (megfeleloVizforras != null)
+            {
+                megfeleloVizforras.VizetHasznal(szuksegesViz);
+                return szuksegesViz;
             }
             else
             {
-                throw new Exception("Nincs elegendo viz a tuzeszoltashoz.");
+                throw new Exception("Nincs elegendő víz a tűzoltáshoz.");
             }
         }
     }
