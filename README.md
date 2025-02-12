@@ -1,6 +1,6 @@
 # Tűzoltóság Szimuláció
 
-Ez a program egy egyszerű tűzoltóság szimulációs rendszer, amelyben egy városban tűzesetek keletkeznek, és a tűzoltók tűzoltóautókkal kivonulnak a helyszínre, majd eloltják a tűzet.
+Ez a program egy szórakoztató és edukatív tűzoltóság szimulációs rendszer, amelyben egy városban tűzesetek keletkeznek, és a tűzoltók tűzoltóautókkal kivonulnak a helyszínre, hogy eloltsák a tüzet. A program célja, hogy bemutassa a tűzoltás és a vízhasználat logikáját, valamint lehetőséget adjon a felhasználóknak arra, hogy irányítsák a tűzoltás folyamatát.
 
 ## Funkcionalitások
 
