@@ -8,7 +8,7 @@ namespace TuzoltosagSim
 {
     public enum TuzTipus
     {
-        Közönséges,
+        Kozonseges,
         Olaj,
         Elektromos
     }
