@@ -22,7 +22,8 @@ namespace TuzoltosagSim
             varos.VizforrasHozzaad(new Vizforras("Civert", 4000));
             varos.VizforrasHozzaad(new Vizforras("Fő vízállomás", 15000));
 
-            while (true)
+            string kilepesValasztas;
+            do
             {
                 Console.WriteLine(new string('=', 50));
                 Console.WriteLine("Új tűzeset szimulációja");
@@ -91,14 +92,11 @@ namespace TuzoltosagSim
                         {
                             felhasznaloEpulet.TuzKiindul(tuzTipus);
                             Console.WriteLine($"\nTűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
-
                             Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
                             Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {10 - osszPoroltoMennyiseg} poroltót használtak fel.");
                             sikeresEsemenyek++;
                         }
-
                     }
-
                     else if (tuzTipus == TuzTipus.Olaj)
                     {
                         osszPoroltoMennyiseg -= 1;
@@ -113,30 +111,24 @@ namespace TuzoltosagSim
                         {
                             felhasznaloEpulet.TuzKiindul(tuzTipus);
                             Console.WriteLine($"\nTűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
-
                             Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
                             Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {10 - osszPoroltoMennyiseg} poroltót használtak fel.");
                             sikeresEsemenyek++;
                         }
                     }
-
                     else
                     {
                         Epulet felhasznaloEpulet = new Epulet(cim, epuletTipus);
                         varos.EpuletHozzaad(felhasznaloEpulet);
-
                         felhasznaloEpulet.TuzKiindul(tuzTipus);
                         Console.WriteLine($"\nTűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
-
                         Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
                         int felhasznaltViz = varos.Tuzoltas(felhasznaloEpulet);
                         osszesFelhasznaltViz += felhasznaltViz;
                         Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {felhasznaltViz} liter vizet használtak.");
-
                         sikeresEsemenyek++;
                     }
                 }
-
                 catch (Exception ex)
                 {
                     Console.WriteLine($"\nHiba történt: {ex.Message}");
@@ -152,12 +144,9 @@ namespace TuzoltosagSim
                 Console.WriteLine("--------------------------------------------------\n");
 
                 Console.WriteLine("\nKilépéshez írja be a 0-át, vagy bármilyen más billentyűvel folytathatja a szimulációt.");
-                string kilepesValasztas = Console.ReadLine()!;
-                if (kilepesValasztas.Trim() == "0")
-                {
-                    break;
-                }
+                kilepesValasztas = Console.ReadLine()!;
             }
+            while (kilepesValasztas.Trim() != "0");
 
             Console.WriteLine("A szimuláció befejeződött. Viszlát!");
         }
