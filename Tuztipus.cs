@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace TuzoltosagSim
 {
-    
+    public enum TuzTipus
+    {
+        Közönséges,
+        Olaj,
+        Elektromos
+    }
 }
 
