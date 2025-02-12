@@ -18,7 +18,7 @@ namespace TuzoltosagSim
             varos.TuzoltoautoHozzaad(new Tuzoltoauto("ABC-123"));
             varos.TuzoltoautoHozzaad(new Tuzoltoauto("XYZ-456"));
 
-            varos.VizforrasHozzaad(new Vizforras("Civert", 10000));
+            varos.VizforrasHozzaad(new Vizforras("Civert", 4000));
             varos.VizforrasHozzaad(new Vizforras("Fő vízállomás", 15000));
 
             while (true)
@@ -34,46 +34,93 @@ namespace TuzoltosagSim
                     Console.WriteLine("Adja meg az épület típusát (Lakó, Iroda, Gyar):");
                     string epuletTipusBemenet = Console.ReadLine()!;
                     EpuletTipus epuletTipus;
-                    if (!Enum.TryParse<EpuletTipus>(epuletTipusBemenet, true, out epuletTipus))
+
+                    switch (epuletTipusBemenet.Trim().ToLower())
                     {
-                        Console.WriteLine("Érvénytelen épület típus, alapértelmezetten 'Lakó' lesz használva.");
-                        epuletTipus = EpuletTipus.Lako;
+                        case "lakó":
+                        case "lako":
+                            epuletTipus = EpuletTipus.Lako;
+                            break;
+                        case "iroda":
+                            epuletTipus = EpuletTipus.Iroda;
+                            break;
+                        case "gyár":
+                        case "gyar":
+                            epuletTipus = EpuletTipus.Gyar;
+                            break;
+                        default:
+                            Console.WriteLine("Érvénytelen épület típus, alapértelmezetten 'Lakó' lesz használva.");
+                            epuletTipus = EpuletTipus.Lako;
+                            break;
                     }
 
                     Console.WriteLine("Adja meg a tűz típusát (Közönséges, Olaj, Elektromos):");
                     string tuzTipusBemenet = Console.ReadLine()!;
                     TuzTipus tuzTipus;
-                    if (!Enum.TryParse<TuzTipus>(tuzTipusBemenet, true, out tuzTipus))
+
+                    switch (tuzTipusBemenet.Trim().ToLower())
                     {
-                        Console.WriteLine("Érvénytelen tűz típus, alapértelmezetten 'Közönséges' lesz használva.");
-                        tuzTipus = TuzTipus.Kozonseges;
+                        case "közönséges":
+                        case "kozonseges":
+                            tuzTipus = TuzTipus.Kozonseges;
+                            break;
+                        case "olaj":
+                            tuzTipus = TuzTipus.Olaj;
+                            break;
+                        case "elektromos":
+                            tuzTipus = TuzTipus.Elektromos;
+                            break;
+                        default:
+                            Console.WriteLine("Érvénytelen tűz típus, alapértelmezetten 'Közönséges' lesz használva.");
+                            tuzTipus = TuzTipus.Kozonseges;
+                            break;
                     }
 
-                    Epulet felhasznaloEpulet = new Epulet(cim, epuletTipus);
-                    varos.EpuletHozzaad(felhasznaloEpulet);
+                    if (tuzTipus == TuzTipus.Elektromos || tuzTipus == TuzTipus.Olaj)
+                    {
+                        Epulet felhasznaloEpulet = new Epulet(cim, epuletTipus);
+                        varos.EpuletHozzaad(felhasznaloEpulet);
 
-                    felhasznaloEpulet.TuzKiindul(tuzTipus);
-                    Console.WriteLine($"Tűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
+                        felhasznaloEpulet.TuzKiindul(tuzTipus);
+                        Console.WriteLine($"Tűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
 
-                    Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
-                    int felhasznaltViz = varos.Tuzoltas(felhasznaloEpulet);
-                    osszesFelhasznaltViz += felhasznaltViz;
-                    Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {felhasznaltViz} liter vizet használtak.");
+                        Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
+                        int felhasznaltViz = varos.Tuzoltas(felhasznaloEpulet);
+                        osszesFelhasznaltViz += felhasznaltViz;
+                        Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {felhasznaltViz} liter vizet használtak.");
 
-                    sikeresEsemenyek++;
+                        sikeresEsemenyek++;
+                    }
+
+                    else
+                    {
+                        Epulet felhasznaloEpulet = new Epulet(cim, epuletTipus);
+                        varos.EpuletHozzaad(felhasznaloEpulet);
+
+                        felhasznaloEpulet.TuzKiindul(tuzTipus);
+                        Console.WriteLine($"Tűz indult az épületen: {felhasznaloEpulet.Cim} (épület típus: {felhasznaloEpulet.Tipus}, tűz típus: {felhasznaloEpulet.TuzTipus})");
+
+                        Console.WriteLine($"Tűzoltás indul az épület címen: {felhasznaloEpulet.Cim}...");
+                        int felhasznaltViz = varos.Tuzoltas(felhasznaloEpulet);
+                        osszesFelhasznaltViz += felhasznaltViz;
+                        Console.WriteLine($"Tűzoltás befejeződött az épület címen: {felhasznaloEpulet.Cim}. {felhasznaltViz} liter vizet használtak.");
+
+                        sikeresEsemenyek++;
+                    }
                 }
+
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Hiba történt: {ex.Message}");
                     sikertelenEsemenyek++;
                 }
 
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine("--------------------------------------------------");
                 Console.WriteLine("Szimuláció statisztikák:");
                 Console.WriteLine($"Megoldott esetek: {sikeresEsemenyek}");
                 Console.WriteLine($"Hibás esetek: {sikertelenEsemenyek}");
                 Console.WriteLine($"Összesen felhasznált víz: {osszesFelhasznaltViz} liter");
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine("--------------------------------------------------");
 
                 Console.WriteLine("Kilépéshez írja be a 0-át, vagy bármilyen más billentyűvel folytathatja a szimulációt.");
                 string kilepesValasztas = Console.ReadLine()!;
