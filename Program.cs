@@ -25,7 +25,7 @@ namespace TuzoltosagSim
             string kilepesValasztas;
             do
             {
-                Console.WriteLine(new string('=', 50));
+                Console.WriteLine("==================================================");
                 Console.WriteLine("Új tűzeset szimulációja");
 
                 try
