@@ -2,7 +2,7 @@
 
 namespace TuzoltosagSim
 {
-    public enum BuildingType
+    public enum EpuletTipus
     {
         Lako,
         Iroda,

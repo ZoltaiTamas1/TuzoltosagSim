@@ -78,7 +78,7 @@ namespace TuzoltosagSim
         private int VizetHasznalTuzoltasra(Epulet epulet)
         {
             int alapVizIgeny = 0;
-            if (epulet.TuzTipus == TuzTipus.Közönséges)
+            if (epulet.TuzTipus == TuzTipus.Kozonseges)
             {
                 alapVizIgeny = 500;
             }
@@ -92,15 +92,15 @@ namespace TuzoltosagSim
             }
 
             double szorzo = 1.0;
-            if (epulet.Tipus == BuildingType.Lako)
+            if (epulet.Tipus == EpuletTipus.Lako)
             {
                 szorzo = 1.0;
             }
-            else if (epulet.Tipus == BuildingType.Iroda)
+            else if (epulet.Tipus == EpuletTipus.Iroda)
             {
                 szorzo = 1.2;
             }
-            else if (epulet.Tipus == BuildingType.Gyar)
+            else if (epulet.Tipus == EpuletTipus.Gyar)
             {
                 szorzo = 1.5;
             }

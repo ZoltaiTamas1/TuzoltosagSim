@@ -7,14 +7,14 @@ namespace TuzoltosagSim
         public string Cim { get; private set; }
         public bool TuzVan { get; private set; }
         public TuzTipus TuzTipus { get; private set; }
-        public BuildingType Tipus { get; private set; }
+        public EpuletTipus Tipus { get; private set; }
 
-        public Epulet(string cim, BuildingType tipus)
+        public Epulet(string cim, EpuletTipus tipus)
         {
             Cim = cim;
             Tipus = tipus;
             TuzVan = false;
-            TuzTipus = TuzTipus.Közönséges;
+            TuzTipus = TuzTipus.Kozonseges;
         }
 
         public void TuzKiindul(TuzTipus tuzTipus)
