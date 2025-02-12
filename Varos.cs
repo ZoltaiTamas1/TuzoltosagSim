@@ -41,7 +41,7 @@ namespace TuzoltosagSim
 
         public int Tuzoltas(Epulet epulet)
         {
-            Tuzolto szabadTuzolto = null;
+            Tuzolto szabadTuzolto = null!;
             foreach (var tuzolto in Tuzoltok)
             {
                 if (tuzolto.Szabad)
@@ -51,7 +51,7 @@ namespace TuzoltosagSim
                 }
             }
 
-            Tuzoltoauto szabadAuto = null;
+            Tuzoltoauto szabadAuto = null!;
             foreach (var auto in TuzoltoAutok)
             {
                 if (auto.Szabad)
@@ -107,7 +107,7 @@ namespace TuzoltosagSim
 
             int szuksegesViz = (int)(alapVizIgeny * szorzo);
 
-            Vizforras megfeleloVizforras = null;
+            Vizforras megfeleloVizforras = null!;
             foreach (var vizforras in Vizforrasok)
             {
                 if (vizforras.VizMennyiseg >= szuksegesViz)
