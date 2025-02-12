@@ -24,6 +24,7 @@ Ez a program egy szórakoztató és edukatív tűzoltóság szimulációs rendsz
 
 * A rendszer keres egy szabad tűzoltót és tűzoltóautót.
 
+
 * A tűzoltóautó kivonul a helyszínre.
 
 * A tűzoltó eloltja a tűzet.
@@ -41,4 +42,5 @@ Ez a program egy szórakoztató és edukatív tűzoltóság szimulációs rendsz
 * Elektromos (vezetékek, elektronikai eszközök)
 
 ## Példa futtatás
+![screenshot](https://github.com/user-attachments/assets/90e377bf-3446-4d0d-b099-a32643e37907)
 
