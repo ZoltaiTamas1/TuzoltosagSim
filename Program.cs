@@ -25,7 +25,7 @@ namespace TuzoltosagSim
                 Console.WriteLine("8. Kilépés");
                 Console.Write("Válassz egy opciót: ");
 
-                string valasztas = Console.ReadLine();
+                string valasztas = Console.ReadLine()!;
 
                 switch (valasztas)
                 {
@@ -63,14 +63,15 @@ namespace TuzoltosagSim
 
         static void EpuletHozzaad(Varos varos)
         {
+            Console.WriteLine("--------------------------------------------------\n");
             Console.Write("Épület címe: ");
-            string cim = Console.ReadLine();
+            string cim = Console.ReadLine()!;
 
             EpuletTipus tipus;
             while (true)
             {
                 Console.WriteLine("Épület típusa (1: Lakó, 2: Iroda, 3: Gyár): ");
-                string tipusValasztas = Console.ReadLine();
+                string tipusValasztas = Console.ReadLine()!;
                 try
                 {
                     tipus = tipusValasztas switch
@@ -95,8 +96,9 @@ namespace TuzoltosagSim
 
         static void TuzoltoHozzaad(Varos varos)
         {
+            Console.WriteLine("--------------------------------------------------\n");
             Console.Write("Tűzoltó neve: ");
-            string nev = Console.ReadLine();
+            string nev = Console.ReadLine()!;
             varos.TuzoltoHozzaad(new Tuzolto(nev));
             Console.WriteLine("Tűzoltó hozzáadva. Nyomj egy gombot a folytatáshoz.");
             Console.ReadKey();
@@ -107,8 +109,9 @@ namespace TuzoltosagSim
             string rendszam;
             while (true)
             {
+                Console.WriteLine("--------------------------------------------------\n");
                 Console.Write("Tűzoltóautó rendszáma (Formátum: ABC123): ");
-                rendszam = Console.ReadLine().ToUpper();
+                rendszam = Console.ReadLine()!.ToUpper();
                 if (Regex.IsMatch(rendszam, @"^[A-Z]{3}\d{3}$"))
                 {
                     break;
@@ -123,8 +126,9 @@ namespace TuzoltosagSim
 
         static void VizforrasHozzaad(Varos varos)
         {
+            Console.WriteLine("--------------------------------------------------\n");
             Console.Write("Vízkút helye: ");
-            string hely = Console.ReadLine();
+            string hely = Console.ReadLine()!;
             int kapacitas;
             while (true)
             {
@@ -143,6 +147,7 @@ namespace TuzoltosagSim
 
         static void TuzInditas(Varos varos)
         {
+            Console.WriteLine("--------------------------------------------------\n");
             if (varos.Epuletek.Count == 0)
             {
                 Console.WriteLine("Nincs épület hozzáadva. Nyomj egy gombot a folytatáshoz.");
@@ -171,7 +176,7 @@ namespace TuzoltosagSim
             while (true)
             {
                 Console.WriteLine("Tűz típusa (1: Közönséges, 2: Olaj, 3: Elektromos): ");
-                string tuzTipusValasztas = Console.ReadLine();
+                string tuzTipusValasztas = Console.ReadLine()!;
                 try
                 {
                     tuzTipus = tuzTipusValasztas switch
@@ -196,6 +201,7 @@ namespace TuzoltosagSim
 
         static void TuzOltas(Varos varos)
         {
+            Console.WriteLine("--------------------------------------------------\n");
             if (varos.Epuletek.Count == 0)
             {
                 Console.WriteLine("Nincs épület hozzáadva. Nyomj egy gombot a folytatáshoz.");
