@@ -1,45 +1,64 @@
 # Tűzoltóság Szimuláció
 
-Ez a program egy szórakoztató és edukatív tűzoltóság szimulációs rendszer, amelyben egy városban tűzesetek keletkeznek, és a tűzoltók tűzoltóautókkal kivonulnak a helyszínre, hogy eloltsák a tüzet. A program célja, hogy bemutassa a tűzoltás és a vízhasználat logikáját, valamint lehetőséget adjon a felhasználóknak arra, hogy irányítsák a tűzoltás folyamatát.
+Ez a program egy egyszerű tűzoltóság szimuláció. A programban van egy város, ahol épületek, tűzoltók, tűzoltóautók és vízkutak találhatók. Néha tüzet kap egy épület, és a tűzoltók tűzoltóautóval elindulnak, hogy eloltsák a tüzet.
 
-## Funkcionalitások
+## Mi történik a programban
 
-* Város kezelése: Az alkalmazás egy várost szimulál, amelyben több épület, tűzoltó és tűzoltóautó lehet.
+- **Város:**  
+  A városban több épület, tűzoltó, tűzoltóautó és vízkút van.
 
-* Felhasználói interakció: A felhasználó adja meg, hogy hol keletkezik tűz, és milyen tűztípus.
+- **Tűzesetek:**  
+  A program véletlenszerűen tüzet indít az épületekben, és a tűzoltók elindulnak, hogy megmentsék az épületeket.
 
-* Automatikus tűzoltás: A rendszer kiválaszt egy szabad tűzoltót és egy tűzoltóautót, amelyek kivonulnak a helyszínre és eloltják a tűzet.
+- **Vízhasználat:**  
+  A tűzoltás során a vízkutakból veszünk vizet. A víz mennyisége az épület típusától és a tűz típusától függ.
 
-* Vízhasználat: A tűzoltáshoz egy megadott vízforrásból fogyaszt vizet a rendszer.
+- **Statisztikák:**  
+  A program végén kiírja, hány épületnél oltották el a tüzet, hány épület égett le, és mennyi vizet használtak.
 
-* Körbefutó program: A program folyamatosan fut, amíg a felhasználó ki nem lép.
+## Hogyan kell használni
 
-## Használat
+1. **Indítás:**  
+   Indítsd el a programot! Megjelenik egy egyszerű menü.
 
-* Indítás: A program a Program.cs futtatásával indul.
+2. **Menü választások:**  
+   A menüben a következő lehetőségek vannak:
+   - Épület hozzáadása
+   - Tűzoltó hozzáadása
+   - Tűzoltóautó hozzáadása
+   - Vízkút hozzáadása
+   - Szimuláció indítása (amikor tüzet kap egy épület, a tűzoltók indulnak)
+   - Kilépés
 
-* Tűzeset megadása: A program bekéri a felhasználótól, hogy melyik épületben keletkezik tűz, és milyen tűztípust kell oltani.
+3. **Épület hozzáadása:**  
+   Meg kell adnod az épület címét és azt, hogy milyen típusú épület (Lakó, Iroda vagy Gyár).
 
-## Tűzoltás folyamata:
+4. **Tűzoltás:**  
+   Ha egy épületben tüzet indít a program, akkor a rendszer megmutatja, melyik tűzoltó és melyik tűzoltóautó megy eloltani a tüzet.
 
-* A rendszer keres egy szabad tűzoltót és tűzoltóautót.
-
-
-* A tűzoltóautó kivonul a helyszínre.
-
-* A tűzoltó eloltja a tűzet.
-
-* A tűzoltóautó visszatér az állomásra.
-
-### Kilépés: Ha a felhasználó 0-t ír be, a program befejeződik.
+5. **Kilépés:**  
+   Kilépés előtt a program kiírja a statisztikákat:  
+   - Hány épületből oltották el a tüzet  
+   - Hány épület égett le  
+   - Összesen mennyi vizet használtak fel
 
 ## Tűztípusok
 
-* Közönséges (fa, papír, textil)
+- **Közönséges:**  
+  Ez a tűz általános anyagok (pl. fa, papír, textil) miatt üt ki.
 
-* Olaj (benzin, étolaj)
+- **Olaj:**  
+  Olaj vagy benzin miatt ég el az épület.
 
-* Elektromos (vezetékek, elektronikai eszközök)
+- **Elektromos:**  
+  Ez akkor történik, ha elektronikai eszközök vagy vezetékek égnek.
+
+## Kilépés
+
+A kilépési opció kiválasztásakor a program megjeleníti a szimuláció során összegyűjtött statisztikákat:
+- Hány épületből sikerült eloltani a tüzet.
+- Hány épület égett le.
+- Összesen mennyi vizet használtak fel a tűzoltások során.
 
 ## Példa futtatás
 ![konozlApp](https://github.com/user-attachments/assets/0f5460ce-c466-4d34-9e1b-84aef1ca12ac)
