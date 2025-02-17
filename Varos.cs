@@ -50,7 +50,7 @@ namespace TuzoltosagSim
 
         public int Tuzoltas(Epulet epulet)
         {
-            Tuzolto szabadTuzolto = null;
+            Tuzolto szabadTuzolto = null!;
             for (int i = 0; i < Tuzoltok.Count; i++)
             {
                 if (Tuzoltok[i].Szabad)
@@ -60,7 +60,7 @@ namespace TuzoltosagSim
                 }
             }
 
-            Tuzoltoauto szabadAuto = null;
+            Tuzoltoauto szabadAuto = null!;
             for (int i = 0; i < TuzoltoAutok.Count; i++)
             {
                 if (TuzoltoAutok[i].Szabad)
@@ -118,7 +118,7 @@ namespace TuzoltosagSim
 
             int szuksegesViz = (int)(alapVizIgeny * szorzo);
 
-            Vizforras megfeleloVizforras = null;
+            Vizforras megfeleloVizforras = null!;
             for (int i = 0; i < Vizforrasok.Count; i++)
             {
                 if (Vizforrasok[i].VizMennyiseg >= szuksegesViz)
@@ -144,7 +144,7 @@ namespace TuzoltosagSim
             }
         }
 
-        public void ResetResources()
+        public void Visszaallit()
         {
             for (int i = 0; i < Tuzoltok.Count; i++)
             {

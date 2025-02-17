@@ -63,7 +63,7 @@ namespace TuzoltosagSim
 
         static void KirajzolFejlec(string cim)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(new string('=', cim.Length));
             Console.WriteLine(cim);
             Console.WriteLine(new string('=', cim.Length));
@@ -92,32 +92,38 @@ namespace TuzoltosagSim
             Console.Write("Épület címe: ");
             string cim = Console.ReadLine()!;
 
-            EpuletTipus tipus;
-            while (true)
+            EpuletTipus tipus = EpuletTipus.Lako;
+            bool ervenyesValasztas = false;
+
+            do
             {
                 Console.WriteLine("Épület típusa (1: Lakó, 2: Iroda, 3: Gyár): ");
                 string tipusValasztas = Console.ReadLine()!;
-                try
+                switch (tipusValasztas)
                 {
-                    tipus = tipusValasztas switch
-                    {
-                        "1" => EpuletTipus.Lako,
-                        "2" => EpuletTipus.Iroda,
-                        "3" => EpuletTipus.Gyar,
-                        _ => throw new Exception("Érvénytelen típus.")
-                    };
-                    break;
+                    case "1":
+                        tipus = EpuletTipus.Lako;
+                        ervenyesValasztas = true;
+                        break;
+                    case "2":
+                        tipus = EpuletTipus.Iroda;
+                        ervenyesValasztas = true;
+                        break;
+                    case "3":
+                        tipus = EpuletTipus.Gyar;
+                        ervenyesValasztas = true;
+                        break;
+                    default:
+                        HibaKiirasa("Érvénytelen típus. Add meg újra!");
+                        break;
                 }
-                catch (Exception)
-                {
-                    HibaKiirasa("Érvénytelen típus. Add meg újra!");
-                }
-            }
+            } while (!ervenyesValasztas);
 
             varos.EpuletHozzaad(new Epulet(cim, tipus));
             SikerKiirasa("Épület hozzáadva. Nyomj egy gombot a folytatáshoz.");
             Console.ReadKey();
         }
+
 
         static void TuzoltoHozzaad(Varos varos)
         {
@@ -209,7 +215,9 @@ namespace TuzoltosagSim
                     try
                     {
                         int felhasznaltViz = varos.Tuzoltas(epulet);
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Sikeresen oltották a tüzet a(z) {epulet.Cim} épületben. Használt víz: {felhasznaltViz} liter.");
+                        Console.ForegroundColor = ConsoleColor.White;
                         varos.EloltottakSzama++;
                         varos.OsszesVizFelhasznalva += felhasznaltViz;
                     }
@@ -219,18 +227,20 @@ namespace TuzoltosagSim
                         try
                         {
                             varos.EpuletElveszt(epulet);
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"A(z) {epulet.Cim} épület leégett!");
+                            Console.ForegroundColor = ConsoleColor.White;
                             varos.LeegtekSzama++;
                         }
-                        catch (Exception burnEx)
+                        catch (Exception tuzEx)
                         {
-                            Console.WriteLine($"Hiba a leégett épület kezelésében: {burnEx.Message}");
+                            Console.WriteLine($"Hiba a leégett épület kezelésében: {tuzEx.Message}");
                         }
                     }
                 }
             }
 
-            varos.ResetResources();
+            varos.Visszaallit();
 
             Console.WriteLine("\nNyomj egy gombot a folytatáshoz.");
             Console.ReadKey();
