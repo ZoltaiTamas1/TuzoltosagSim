@@ -42,5 +42,4 @@ Ez a program egy szórakoztató és edukatív tűzoltóság szimulációs rendsz
 * Elektromos (vezetékek, elektronikai eszközök)
 
 ## Példa futtatás
-![screenshot](https://github.com/user-attachments/assets/90e377bf-3446-4d0d-b099-a32643e37907)
-
+![konozlApp](https://github.com/user-attachments/assets/0f5460ce-c466-4d34-9e1b-84aef1ca12ac)
