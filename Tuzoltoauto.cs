@@ -21,7 +21,7 @@ namespace TuzoltosagSim
             Szabad = false;
         }
 
-        public void Visszaerkezik()
+        public void Reset()
         {
             Szabad = true;
         }

@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TuzoltosagSim
 {
     public class Varos
     {
         public List<Epulet> Epuletek { get; private set; }
+        public List<Epulet> Leegtek { get; private set; }
         public List<Tuzolto> Tuzoltok { get; private set; }
         public List<Tuzoltoauto> TuzoltoAutok { get; private set; }
         public List<Vizforras> Vizforrasok { get; private set; }
 
+        public int EloltottakSzama { get; set; }
+        public int LeegtekSzama { get; set; }
+        public int OsszesVizFelhasznalva { get; set; }
+
         public Varos()
         {
             Epuletek = new List<Epulet>();
+            Leegtek = new List<Epulet>();
             Tuzoltok = new List<Tuzolto>();
             TuzoltoAutok = new List<Tuzoltoauto>();
             Vizforrasok = new List<Vizforras>();
+
+            EloltottakSzama = 0;
+            LeegtekSzama = 0;
+            OsszesVizFelhasznalva = 0;
         }
 
         public void EpuletHozzaad(Epulet epulet)
@@ -41,36 +50,34 @@ namespace TuzoltosagSim
 
         public int Tuzoltas(Epulet epulet)
         {
-            Tuzolto szabadTuzolto = null!;
-            foreach (var tuzolto in Tuzoltok)
+            Tuzolto szabadTuzolto = null;
+            for (int i = 0; i < Tuzoltok.Count; i++)
             {
-                if (tuzolto.Szabad)
+                if (Tuzoltok[i].Szabad)
                 {
-                    szabadTuzolto = tuzolto;
+                    szabadTuzolto = Tuzoltok[i];
                     break;
                 }
             }
 
-            Tuzoltoauto szabadAuto = null!;
-            foreach (var auto in TuzoltoAutok)
+            Tuzoltoauto szabadAuto = null;
+            for (int i = 0; i < TuzoltoAutok.Count; i++)
             {
-                if (auto.Szabad)
+                if (TuzoltoAutok[i].Szabad)
                 {
-                    szabadAuto = auto;
+                    szabadAuto = TuzoltoAutok[i];
                     break;
                 }
             }
 
             if (szabadTuzolto == null || szabadAuto == null)
-            {
                 throw new Exception("Nincs szabad tűzoltó vagy tűzoltóautó.");
-            }
+
+            Console.WriteLine($"Tűzoltó {szabadTuzolto.Nev} és tűzoltóautó {szabadAuto.Rendszam} indul a tüzet oltani a(z) {epulet.Cim} épületben.");
 
             szabadTuzolto.Riasztas(epulet);
             szabadAuto.Kivonul(szabadTuzolto, epulet);
             szabadTuzolto.Tuzoltas(epulet);
-            szabadAuto.Visszaerkezik();
-
             int felhasznaltViz = VizetHasznalTuzoltasra(epulet);
             return felhasznaltViz;
         }
@@ -78,53 +85,75 @@ namespace TuzoltosagSim
         private int VizetHasznalTuzoltasra(Epulet epulet)
         {
             int alapVizIgeny = 0;
-            if (epulet.TuzTipus == TuzTipus.Kozonseges)
+            switch (epulet.TuzTipus)
             {
-                alapVizIgeny = 500;
-            }
-            else if (epulet.TuzTipus == TuzTipus.Olaj)
-            {
-                alapVizIgeny = 800;
-            }
-            else if (epulet.TuzTipus == TuzTipus.Elektromos)
-            {
-                alapVizIgeny = 300;
+                case TuzTipus.Kozonseges:
+                    alapVizIgeny = 500;
+                    break;
+                case TuzTipus.Olaj:
+                    alapVizIgeny = 800;
+                    break;
+                case TuzTipus.Elektromos:
+                    alapVizIgeny = 300;
+                    break;
+                default:
+                    throw new Exception("Ismeretlen tűztípus.");
             }
 
             double szorzo = 1.0;
-            if (epulet.Tipus == EpuletTipus.Lako)
+            switch (epulet.Tipus)
             {
-                szorzo = 1.0;
-            }
-            else if (epulet.Tipus == EpuletTipus.Iroda)
-            {
-                szorzo = 1.2;
-            }
-            else if (epulet.Tipus == EpuletTipus.Gyar)
-            {
-                szorzo = 1.5;
+                case EpuletTipus.Lako:
+                    szorzo = 1.0;
+                    break;
+                case EpuletTipus.Iroda:
+                    szorzo = 1.2;
+                    break;
+                case EpuletTipus.Gyar:
+                    szorzo = 1.5;
+                    break;
+                default:
+                    throw new Exception("Ismeretlen épülettípus.");
             }
 
             int szuksegesViz = (int)(alapVizIgeny * szorzo);
 
-            Vizforras megfeleloVizforras = null!;
-            foreach (var vizforras in Vizforrasok)
+            Vizforras megfeleloVizforras = null;
+            for (int i = 0; i < Vizforrasok.Count; i++)
             {
-                if (vizforras.VizMennyiseg >= szuksegesViz)
+                if (Vizforrasok[i].VizMennyiseg >= szuksegesViz)
                 {
-                    megfeleloVizforras = vizforras;
+                    megfeleloVizforras = Vizforrasok[i];
                     break;
                 }
             }
 
-            if (megfeleloVizforras != null)
-            {
-                megfeleloVizforras.VizetHasznal(szuksegesViz);
-                return szuksegesViz;
-            }
-            else
-            {
+            if (megfeleloVizforras == null)
                 throw new Exception("Nincs elegendő víz a tűzoltáshoz.");
+
+            megfeleloVizforras.VizetHasznal(szuksegesViz);
+            return szuksegesViz;
+        }
+
+        public void EpuletElveszt(Epulet epulet)
+        {
+            if (Epuletek.Contains(epulet))
+            {
+                Epuletek.Remove(epulet);
+                Leegtek.Add(epulet);
+            }
+        }
+
+        public void ResetResources()
+        {
+            for (int i = 0; i < Tuzoltok.Count; i++)
+            {
+                Tuzoltok[i].Reset();
+            }
+
+            for (int i = 0; i < TuzoltoAutok.Count; i++)
+            {
+                TuzoltoAutok[i].Reset();
             }
         }
     }

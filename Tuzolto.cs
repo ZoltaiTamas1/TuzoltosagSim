@@ -27,6 +27,10 @@ namespace TuzoltosagSim
                 throw new Exception($"{Nev} szabad, nem tud tüzet oltani.");
 
             epulet.TuzEloltva();
+        }
+
+        public void Reset()
+        {
             Szabad = true;
         }
     }

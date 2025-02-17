@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace TuzoltosagSim
@@ -43,6 +44,13 @@ namespace TuzoltosagSim
                         SzimulacioInditasa(varos);
                         break;
                     case "6":
+                        Console.Clear();
+                        KirajzolFejlec("=== Játék Statisztikák ===");
+                        Console.WriteLine($"\nEloltott épületek száma: {varos.EloltottakSzama}");
+                        Console.WriteLine($"Leégett épületek száma: {varos.LeegtekSzama}");
+                        Console.WriteLine($"Felhasznált víz összmennyisége: {varos.OsszesVizFelhasznalva} liter");
+                        Console.WriteLine("\nNyomj egy gombot a kilépéshez.");
+                        Console.ReadKey();
                         futas = false;
                         break;
                     default:
@@ -167,6 +175,7 @@ namespace TuzoltosagSim
         {
             Console.Clear();
             KirajzolFejlec("=== Szimuláció Indítása ===");
+
             if (varos.Epuletek.Count == 0)
             {
                 HibaKiirasa("Nincs épület a szimulációhoz. Nyomj egy gombot a folytatáshoz.");
@@ -175,57 +184,53 @@ namespace TuzoltosagSim
             }
 
             Random rnd = new Random();
-            List<Epulet> tuzesEpuletek = new List<Epulet>();
-            List<Epulet> leegtek = new List<Epulet>();
 
             foreach (var epulet in varos.Epuletek)
             {
-                if (epulet.TuzVan)
+                if (!epulet.TuzVan && rnd.NextDouble() < 0.3)
                 {
-                    if (rnd.NextDouble() < 0.5)
-                    {
-                        varos.EpuletElveszt(epulet);
-                        leegtek.Add(epulet);
-                        HibaKiirasa($"A(z) {epulet.Cim} címen lévő épület leégett!");
-                    }
-                }
-                else if (rnd.NextDouble() < 0.4)
-                {
+                    var tuzTipus = (TuzTipus)rnd.Next(0, 3);
                     try
                     {
-                        var tuzTipus = (TuzTipus)rnd.Next(0, 3);
                         epulet.TuzKiindul(tuzTipus);
-                        tuzesEpuletek.Add(epulet);
+                        Console.WriteLine($"Tűz tört ki a(z) {epulet.Cim} épületben. (Típus: {tuzTipus})");
                     }
                     catch (Exception ex)
                     {
-                        HibaKiirasa($"Hiba a(z) {epulet.Cim} épületnél: {ex.Message}");
+                        Console.WriteLine($"Hiba a tűzindításnál a(z) {epulet.Cim} épületnél: {ex.Message}");
                     }
                 }
             }
 
-            Console.WriteLine("\nSzimuláció eredménye:");
-            if (tuzesEpuletek.Count > 0)
+            foreach (var epulet in varos.Epuletek.ToList())
             {
-                Console.WriteLine("A következő épületekben történt tűz:");
-                foreach (var epulet in tuzesEpuletek)
+                if (epulet.TuzVan)
                 {
-                    Console.WriteLine($"- {epulet.Cim} ({epulet.TuzTipus} típusú tűz)");
+                    try
+                    {
+                        int felhasznaltViz = varos.Tuzoltas(epulet);
+                        Console.WriteLine($"Sikeresen oltották a tüzet a(z) {epulet.Cim} épületben. Használt víz: {felhasznaltViz} liter.");
+                        varos.EloltottakSzama++;
+                        varos.OsszesVizFelhasznalva += felhasznaltViz;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Nem sikerült oltani a tüzet a(z) {epulet.Cim} épületben: {ex.Message}");
+                        try
+                        {
+                            varos.EpuletElveszt(epulet);
+                            Console.WriteLine($"A(z) {epulet.Cim} épület leégett!");
+                            varos.LeegtekSzama++;
+                        }
+                        catch (Exception burnEx)
+                        {
+                            Console.WriteLine($"Hiba a leégett épület kezelésében: {burnEx.Message}");
+                        }
+                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine("Egyetlen épületben sem történt tűz.");
             }
 
-            if (leegtek.Count > 0)
-            {
-                Console.WriteLine("\nLeégett épületek:");
-                foreach (var epulet in leegtek)
-                {
-                    Console.WriteLine($"- {epulet.Cim}");
-                }
-            }
+            varos.ResetResources();
 
             Console.WriteLine("\nNyomj egy gombot a folytatáshoz.");
             Console.ReadKey();
