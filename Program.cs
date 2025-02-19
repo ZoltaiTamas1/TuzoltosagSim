@@ -165,7 +165,7 @@ namespace TuzoltosagSim
             int kapacitas;
             while (true)
             {
-                Console.Write("Vízkút kapacitása: ");
+                Console.Write("Vízkút kapacitása (l): ");
                 if (int.TryParse(Console.ReadLine(), out kapacitas) && kapacitas > 0)
                     break;
 
